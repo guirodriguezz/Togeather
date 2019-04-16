@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "407554026232",
+    "firebase_url": "https://togeather-bandtec.firebaseio.com",
+    "project_id": "togeather-bandtec",
+    "storage_bucket": "togeather-bandtec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407554026232:android:8ae247edd95e1411",
+        "android_client_info": {
+          "package_name": "com.example.guiro.togeather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407554026232-e9d531k7v8mgau1nnp410k1f9p8ebhl9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.guiro.togeather",
+            "certificate_hash": "4d9537723cb7c765a78c44766173f17817ba6082"
+          }
+        },
+        {
+          "client_id": "407554026232-mg9shub78p9b7qrlune267onas4ivj65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmi_kz4Xmymv2D3ugYPvYKeq4KRjk7qgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407554026232-mg9shub78p9b7qrlune267onas4ivj65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
