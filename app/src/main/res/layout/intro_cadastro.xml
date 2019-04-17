@@ -56,7 +56,7 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:onClick="btCadastrar"
-        android:text="Cadastra-se"
+        android:text="Cadastre-se"
         android:textAllCaps="true"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/textView4"

@@ -3,10 +3,11 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/App</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:colorBackground">@color/background_material_light</item>
         <item name="android:navigationBarColor">@color/common_google_signin_btn_text_dark_focused</item>
+        <item name="android:statusBarColor">@color/App</item>
     </style>
 </resources>
