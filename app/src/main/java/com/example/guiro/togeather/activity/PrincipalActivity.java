@@ -79,7 +79,7 @@ public class PrincipalActivity extends AppCompatActivity
             case R.id.menuSair :
                 autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
                 autenticacao.signOut();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
         }
