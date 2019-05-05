@@ -25,7 +25,7 @@
         app:srcCompat="@mipmap/logo" />
 
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/editLoginEmail"
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/editSenha"
+        app:layout_constraintBottom_toTopOf="@+id/editLoginSenha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editNome" />
@@ -66,13 +66,13 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail"
+        app:layout_constraintBottom_toTopOf="@+id/editLoginEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
-        android:id="@+id/editSenha"
+        android:id="@+id/editLoginSenha"
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonCadastrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editLoginEmail" />
 
     <Button
         android:id="@+id/buttonCadastrar"
@@ -110,6 +110,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSenha" />
+        app:layout_constraintTop_toBottomOf="@+id/editLoginSenha" />
 
 </android.support.constraint.ConstraintLayout>

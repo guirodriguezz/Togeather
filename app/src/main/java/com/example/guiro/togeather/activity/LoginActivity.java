@@ -18,8 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Login");
 
-        campoEmail = findViewById(R.id.editEmail);
-        campoSenha = findViewById(R.id.editSenha);
+        campoEmail = findViewById(R.id.editLoginEmail);
+        campoSenha = findViewById(R.id.editLoginSenha);
         botaoEntrar = findViewById(R.id.buttonEntrar);
 
         botaoEntrar.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                         usuario = new Usuario();
                         usuario.setEmail(textoEmail);
                         usuario.setSenha(textoSenha);
-                        validarLogin();
+
+                        validarLogin(usuario);
 
                     } else {
                         Toast.makeText(LoginActivity.this,
@@ -69,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void validarLogin(){
+    public void validarLogin(Usuario usuario){
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.signInWithEmailAndPassword(
@@ -91,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (FirebaseAuthInvalidCredentialsException e){
                         excecao = "E-mail e senha não correspondem a um usuário cadastrado!";
                     } catch (Exception e){
-                        excecao = "Erro ao cadastrar usuário: " +e.getMessage();
+                        excecao = "Erro ao autenticar usuário: " +e.getMessage();
                         e.printStackTrace();
                     }
 

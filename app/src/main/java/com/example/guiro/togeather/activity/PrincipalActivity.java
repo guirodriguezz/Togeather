@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.guiro.togeather.ChatActivity;
 import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,5 +111,11 @@ public class PrincipalActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void btChat(View view){
+
+        startActivity(new Intent(this, ChatActivity.class));
+
     }
 }

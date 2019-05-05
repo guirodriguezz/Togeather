@@ -34,8 +34,8 @@ public class CadastroActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Cadastro");
 
         campoNome = findViewById(R.id.editNome);
-        campoEmail = findViewById(R.id.editEmail);
-        campoSenha = findViewById(R.id.editSenha);
+        campoEmail = findViewById(R.id.editLoginEmail);
+        campoSenha = findViewById(R.id.editLoginSenha);
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,8 @@ public class CadastroActivity extends AppCompatActivity {
                             usuario.setNome(textoNome);
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
-                            cadastrarUsuario();
+
+                            cadastrarUsuario(usuario);
 
                         } else {
                             Toast.makeText(CadastroActivity.this,
@@ -80,7 +81,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void cadastrarUsuario (){
+    public void cadastrarUsuario (Usuario usuario){
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()
@@ -88,6 +89,9 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+
+                    Toast.makeText(CadastroActivity.this,
+                            "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
 
                     finish();
 
@@ -114,4 +118,5 @@ public class CadastroActivity extends AppCompatActivity {
         });
 
     }
+
 }
