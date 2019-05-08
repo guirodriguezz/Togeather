@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.guiro.togeather.R;
-import com.example.guiro.togeather.activity.CadastroActivity;
-import com.example.guiro.togeather.activity.LoginActivity;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
@@ -49,6 +47,8 @@ public class MainActivity extends IntroActivity {
                 .fragment(R.layout.intro_cadastro)
                 .canGoForward(false)
                 .build());
+
+
     }
 
     @Override

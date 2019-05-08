@@ -1,5 +1,6 @@
 package com.example.guiro.togeather.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
+import com.example.guiro.togeather.helper.Base64Custom;
 import com.example.guiro.togeather.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,8 +32,6 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-
-        getSupportActionBar().setTitle("Cadastro");
 
         campoNome = findViewById(R.id.editNome);
         campoEmail = findViewById(R.id.editLoginEmail);
@@ -81,7 +81,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void cadastrarUsuario (Usuario usuario){
+    public void cadastrarUsuario (final Usuario usuario){
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()
@@ -90,10 +90,23 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
 
+                    try {
+
+                        String identificadorUsuario =
+                                Base64Custom.codificarBase64(usuario.getEmail());
+                        usuario.setId(identificadorUsuario);
+                        usuario.salvar();
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(CadastroActivity.this,
                             "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
 
-                    finish();
+                    //finish()
+
+                    abrirTelaLogin();
 
                 } else {
 
@@ -117,6 +130,11 @@ public class CadastroActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void abrirTelaLogin(){
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
 }
