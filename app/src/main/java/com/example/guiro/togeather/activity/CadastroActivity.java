@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.Base64Custom;
+import com.example.guiro.togeather.helper.UsuarioFirebase;
 import com.example.guiro.togeather.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +34,7 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        campoNome = findViewById(R.id.editNome);
+        campoNome = findViewById(R.id.editPerfilNome);
         campoEmail = findViewById(R.id.editLoginEmail);
         campoSenha = findViewById(R.id.editLoginSenha);
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
@@ -105,7 +106,7 @@ public class CadastroActivity extends AppCompatActivity {
                             "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
 
                     //finish()
-
+                    UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
                     abrirTelaLogin();
 
                 } else {

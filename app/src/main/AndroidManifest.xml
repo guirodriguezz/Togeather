@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.guiro.togeather">
 
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="true"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -31,7 +32,19 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.CadastroActivity" />
         <activity android:name=".activity.PrincipalActivity" />
-        <activity android:name=".activity.ChatActivity"></activity>
+        <activity android:name=".activity.ChatActivity" />
+        <activity
+            android:name=".activity.ConfiguracoesActivity"
+            android:parentActivityName=".activity.ChatActivity" />
+        <activity
+            android:name=".activity.ChatConversaActivity"
+            android:label="@string/title_activity_chat_conversa"
+            android:parentActivityName=".activity.ChatActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.guiro.togeather.activity.ChatActivity" />
+        </activity>
     </application>
 
 </manifest>

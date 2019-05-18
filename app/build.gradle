@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.guiro.togeather"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -27,12 +27,28 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    /*Dependências firebase*/
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.firebaseui:firebase-ui-storage:3.3.1'
+
     implementation 'com.heinrichreimersoftware:material-intro:1.6'
+
+    /*Dependências para abas*/
+    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
+
+    /*Dependência para arrendondamento de imagens*/
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    /*Glade*/
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

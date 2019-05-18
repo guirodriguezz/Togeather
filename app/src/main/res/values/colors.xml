@@ -6,4 +6,7 @@
     <color name="background_material_light">#ffffff</color>
     <color name="App">#606b76</color>
     <color name="apps">#0fffffff</color>
+    <color name="cinza_claro">#ffffff</color>
+
+    <color name="balaoRemetente">#dbf9c4</color>
 </resources>

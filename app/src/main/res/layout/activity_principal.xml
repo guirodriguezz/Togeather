@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg"
     tools:context=".activity.PrincipalActivity"
-    tools:layout_editor_absoluteY="81dp">
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" />
-
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
         android:id="@+id/imageView5"
@@ -20,41 +14,68 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/nomeUser"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38"
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@mipmap/logo" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="111dp"
+    <TextView
+        android:id="@+id/nomeUser"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/white"
-        android:ems="10"
-        android:inputType="textMultiLine"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="User"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/roboto"
+        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="111dp"
+    <Button
+        android:id="@+id/imageButtonCamera"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:backgroundTint="@android:color/white"
-        android:ems="10"
-        android:inputType="textMultiLine"
+        android:background="@android:color/holo_orange_light"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:onClick="btFoto"
+        android:text="Começar"
+        android:textAllCaps="true"
+        android:textColor="#343f4b"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonCamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeUser"
+        app:srcCompat="@drawable/menu" />
 
     <TextView
         android:id="@+id/textView5"
@@ -62,120 +83,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Comece agora"
-        android:textColor="@android:color/holo_orange_light"
-        android:textSize="18sp"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
-    <ImageView
-        android:id="@+id/imageButtonCamera"
-        android:layout_width="112dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:srcCompat="@drawable/camera" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="112dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView11"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonCamera"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:srcCompat="@drawable/gps" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="112dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:onClick="btChat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2"
-        app:srcCompat="@drawable/chat" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="center"
-        android:text="Tire uma \n foto"
+        android:fontFamily="@font/roboto"
+        android:text="Sair"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintEnd_toStartOf="@+id/imageView10"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonCamera" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="43dp"
-        android:layout_marginLeft="43dp"
-        android:text="Selecione \n um ponto"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:gravity="center"
-        android:text="Troque \n mensagens"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toEndOf="@+id/imageView10"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
-
-    <ImageView
-        android:id="@+id/imageTeste"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:srcCompat="@color/apps" />
 
 </android.support.constraint.ConstraintLayout>

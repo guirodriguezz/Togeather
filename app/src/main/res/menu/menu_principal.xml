@@ -2,8 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menuSair"
+    <item
+        android:id="@+id/menuPesquisa"
+        android:icon="@drawable/ic_pesquisa_branco_24dp"
+        android:title="Pesquisar"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuConfigurações"
+        android:title="Configurações"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuSair"
         android:title="Sair"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>
