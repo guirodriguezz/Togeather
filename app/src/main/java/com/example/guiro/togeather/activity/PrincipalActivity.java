@@ -36,6 +36,7 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         nomeUser = findViewById(R.id.nomeUser);
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         //Recuperar dados do usuário
         FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
@@ -46,6 +47,17 @@ public class PrincipalActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, ConfiguracoesActivity.class));
 
+    }
+
+    public void deslogarUsuario(View view){
+
+        try {
+            autenticacao.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

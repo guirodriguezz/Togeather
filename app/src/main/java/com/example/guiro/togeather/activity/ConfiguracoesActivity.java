@@ -22,6 +22,7 @@ import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.Permissao;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
+import com.example.guiro.togeather.model.Mensagem;
 import com.example.guiro.togeather.model.Usuario;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,13 +80,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         final FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
         Uri url = usuario.getPhotoUrl();
 
-        if (url != null){
+        if (url != null) {
 
             Glide.with(ConfiguracoesActivity.this)
                     .load(url)
                     .into(circleImageViewFoto);
 
-        }else{
+        } else {
 
             circleImageViewFoto.setImageResource(R.drawable.padrao);
         }
@@ -107,17 +108,17 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 String nome = editPerfilNome.getText().toString();
                 boolean retorno = UsuarioFirebase.atualizarNomeUsuario(nome);
 
-                if (retorno){
+                if (retorno) {
 
                     usuarioLogado.setNome(nome);
                     usuarioLogado.atualizar();
 
                     Toast.makeText(ConfiguracoesActivity.this,
-                        "Selfie tirada com sucesso!",
+                            "Selfie tirada com sucesso!",
                             Toast.LENGTH_SHORT).show();
                 }
 
-               avancarParaChat();
+                avancarParaChat();
             }
         });
 
@@ -184,7 +185,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                                     atualizaFotoUsuario(uri);
                                 }
                             });
-
                 }
             });
 
@@ -195,7 +195,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         boolean retorno = UsuarioFirebase.atualizarFotoUsuario(url);
 
-        if (retorno){
+        if (retorno) {
 
             usuarioLogado.setFoto(url.toString());
             usuarioLogado.atualizar();

@@ -87,6 +87,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:fontFamily="@font/roboto"
+        android:onClick="deslogarUsuario"
         android:text="Sair"
         android:textColor="@android:color/white"
         android:textSize="18sp"
