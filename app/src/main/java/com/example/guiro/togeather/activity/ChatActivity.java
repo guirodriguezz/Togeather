@@ -58,50 +58,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_principal, menu);
 
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    // Itens selecionados
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.menuSair:
-                deslogarUsuario();
-                abrirTelaLogin();
-                finish();
-                break;
-            case R.id.menuConfigurações:
-                abrirConfiguracoes();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void deslogarUsuario(){
-
-        try {
-            autenticacao.signOut();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void abrirTelaLogin(){
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-    }
-
-    public void abrirConfiguracoes(){
-
-        Intent intent = new Intent(ChatActivity.this, ConfiguracoesActivity.class);
-        startActivity(intent);
-    }
 }

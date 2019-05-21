@@ -46,7 +46,11 @@ dependencies {
 
     /*Glade*/
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    /*Dependências de localização*/
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'

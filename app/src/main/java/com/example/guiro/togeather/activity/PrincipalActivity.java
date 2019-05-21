@@ -46,6 +46,14 @@ public class PrincipalActivity extends AppCompatActivity {
     public void btFoto(View view) {
 
         startActivity(new Intent(this, ConfiguracoesActivity.class));
+        finish();
+
+    }
+
+    public void btChat(View view) {
+
+        startActivity(new Intent(this, ChatActivity.class));
+        finish();
 
     }
 

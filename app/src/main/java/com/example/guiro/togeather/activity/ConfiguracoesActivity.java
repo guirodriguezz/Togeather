@@ -126,7 +126,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     public void avancarParaChat() {
 
-        startActivity(new Intent(this, ChatActivity.class));
+        startActivity(new Intent(this, MapaActivity.class));
+        finish();
 
     }
 
