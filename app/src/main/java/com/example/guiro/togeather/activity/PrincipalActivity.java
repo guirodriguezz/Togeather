@@ -18,6 +18,7 @@ import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.Permissao;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
 import com.example.guiro.togeather.model.Usuario;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
