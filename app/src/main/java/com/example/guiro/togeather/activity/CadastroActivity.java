@@ -1,6 +1,7 @@
 package com.example.guiro.togeather.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class CadastroActivity extends AppCompatActivity {
 
@@ -59,6 +63,13 @@ public class CadastroActivity extends AppCompatActivity {
                             usuario.setNome(textoNome);
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
+
+                            ACProgressFlower dialog = new ACProgressFlower.Builder(CadastroActivity.this)
+                                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                    .themeColor(Color.WHITE)
+                                    .text("Cadastrando...")
+                                    .fadeColor(Color.DKGRAY).build();
+                            dialog.show();
 
                             cadastrarUsuario(usuario);
 

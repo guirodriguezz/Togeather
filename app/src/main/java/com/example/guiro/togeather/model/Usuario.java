@@ -2,6 +2,8 @@ package com.example.guiro.togeather.model;
 
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
@@ -16,6 +18,9 @@ public class Usuario implements Serializable {
     private String email;
     private String senha;
     private String foto;
+
+    private String latitude;
+    private String longitude;
 
     public Usuario() {
     }
@@ -50,6 +55,22 @@ public class Usuario implements Serializable {
         usuarioMap.put("foto", getFoto());
 
         return usuarioMap;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getFoto() {

@@ -3,6 +3,7 @@ package com.example.guiro.togeather.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -32,6 +33,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
@@ -107,6 +110,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
                 String nome = editPerfilNome.getText().toString();
                 boolean retorno = UsuarioFirebase.atualizarNomeUsuario(nome);
+
+                ACProgressFlower dialog = new ACProgressFlower.Builder(ConfiguracoesActivity.this)
+                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                        .themeColor(Color.WHITE)
+                        .text("Salvando foto...")
+                        .fadeColor(Color.DKGRAY).build();
+                dialog.show();
 
                 if (retorno) {
 

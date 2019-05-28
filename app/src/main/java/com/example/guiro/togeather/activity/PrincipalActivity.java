@@ -3,6 +3,7 @@ package com.example.guiro.togeather.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -59,6 +63,13 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void deslogarUsuario(View view){
+
+        ACProgressFlower dialog = new ACProgressFlower.Builder(PrincipalActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(Color.WHITE)
+                .text("Saindo...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
 
         try {
             autenticacao.signOut();
