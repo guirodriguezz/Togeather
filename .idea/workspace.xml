@@ -36,8 +36,8 @@
       <file leaf-file-name="MapaActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/guiro/togeather/activity/MapaActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="144" column="52" selection-start-line="144" selection-start-column="52" selection-end-line="144" selection-end-column="52" />
+            <state relative-caret-position="2293">
+              <caret line="182" selection-start-line="182" selection-end-line="182" />
               <folding>
                 <element signature="e#10664#10844#0" expanded="true" />
                 <element signature="e#10843#10844#0" expanded="true" />
@@ -2432,7 +2432,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="28" />
     <option name="y" value="47" />
     <option name="width" value="1346" />
@@ -2682,8 +2682,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/guiro/togeather/activity/MapaActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="144" column="52" selection-start-line="144" selection-start-column="52" selection-end-line="144" selection-end-column="52" />
+        <state relative-caret-position="2293">
+          <caret line="182" selection-start-line="182" selection-end-line="182" />
           <folding>
             <element signature="e#10664#10844#0" expanded="true" />
             <element signature="e#10843#10844#0" expanded="true" />
