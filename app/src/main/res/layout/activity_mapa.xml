@@ -16,6 +16,7 @@
     <include layout="@layout/content_mapa" />
 
     <LinearLayout
+        android:id="@+id/linearLayoutDestino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -58,6 +59,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/buttonChamar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"

@@ -17,7 +17,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.guiro.togeather.helper.Permissao;
@@ -38,6 +40,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import com.example.guiro.togeather.R;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -45,17 +48,20 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class MapaActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-
+    //Componentes
     private EditText editDestino;
+    private LinearLayout linearLayoutDestino;
+    private Button buttonChamar;
 
-    private LatLng meuLocal;
-
+    private GoogleMap mMap;
     private String[] permissao = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
     };
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private LatLng meuLocal;
+    private boolean abrirChamado = false;
+
 
     Date data = new Date();
 
@@ -70,7 +76,10 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MapsInitializer.initialize(this);
 
+        //Inicializar componentes
         editDestino = findViewById(R.id.editDestino);
+        linearLayoutDestino = findViewById(R.id.linearLayoutDestino);
+        buttonChamar = findViewById(R.id.buttonChamar);
 
         //Validar permissões
         Permissao.validarPermissoes(permissao, this, 1);
@@ -81,97 +90,114 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
     }
 
-    private Address recuperarEndereco(String endereco){
+    private Address recuperarEndereco(String endereco) {
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try{
+        try {
             List<Address> listaEnderecos = geocoder.getFromLocationName(endereco, 1);
-            if( listaEnderecos != null && listaEnderecos.size() > 0 ) {
+            if (listaEnderecos != null && listaEnderecos.size() > 0) {
                 Address address = listaEnderecos.get(0);
 
                 return address;
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void realizarChamado(View view){
+    public void realizarChamado(View view) {
 
-        String enderecoDestino = editDestino.getText().toString();
+        if (!abrirChamado) {   //Acompanhante ainda não solicitada
 
-        if( !enderecoDestino.equals("") || enderecoDestino != null ){
+            String enderecoDestino = editDestino.getText().toString();
 
-            Address addressDestino = recuperarEndereco( enderecoDestino );
-            if( addressDestino != null ){
+            if (!enderecoDestino.equals("") || enderecoDestino != null) {
 
-                final Destino destino = new Destino();
-                destino.setCidade( addressDestino.getAdminArea() );
-                destino.setCep( addressDestino.getPostalCode() );
-                destino.setBairro( addressDestino.getSubLocality() );
-                destino.setRua( addressDestino.getThoroughfare() );
-                destino.setNumero( addressDestino.getFeatureName() );
-                destino.setLatitude( String.valueOf(addressDestino.getLatitude()) );
-                destino.setLongitude( String.valueOf(addressDestino.getLongitude()) );
+                Address addressDestino = recuperarEndereco(enderecoDestino);
+                if (addressDestino != null) {
 
-                StringBuilder mensagem = new StringBuilder();
-                mensagem.append( "Cidade: " + destino.getCidade() );
-                mensagem.append( "\nRua: " + destino.getRua() );
-                mensagem.append( "\nBairro: " + destino.getBairro() );
-                mensagem.append( "\nNúmero: " + destino.getNumero() );
-                mensagem.append( "\nCep: " + destino.getCep() );
+                    final Destino destino = new Destino();
+                    destino.setCidade(addressDestino.getAdminArea());
+                    destino.setCep(addressDestino.getPostalCode());
+                    destino.setBairro(addressDestino.getSubLocality());
+                    destino.setRua(addressDestino.getThoroughfare());
+                    destino.setNumero(addressDestino.getFeatureName());
+                    destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
+                    destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("O destino está correto?");
-                builder.setMessage(mensagem);
-                builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    StringBuilder mensagem = new StringBuilder();
+                    mensagem.append("Cidade: " + destino.getCidade());
+                    mensagem.append("\nRua: " + destino.getRua());
+                    mensagem.append("\nBairro: " + destino.getBairro());
+                    mensagem.append("\nNúmero: " + destino.getNumero());
+                    mensagem.append("\nCep: " + destino.getCep());
 
-                        try {
-                            salvarRequisicao(destino);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("O destino está correto?");
+                    builder.setMessage(mensagem);
+                    builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            try {
+                                salvarRequisicao(destino);
+                                abrirChamado = true;
+                            } catch (Exception ex) {
+                                Toast.makeText(MapaActivity.this, ex.toString(),
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
+
                         }
-                        catch (Exception ex){
-                            Toast.makeText(MapaActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
+                    });
+                    builder.setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
                         }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
-                    }
-                });
-                builder.setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                }
 
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+            } else {
+                Toast.makeText(this, "Informe o endereço de destino!",
+                        Toast.LENGTH_SHORT).show();
             }
 
-        }else {
-            Toast.makeText(this, "Informe o endereço de destino!", Toast.LENGTH_SHORT).show();
+
+        } else {
+            //Cancelar requisição
+            abrirChamado = false;
+
         }
+
 
     }
 
-    private void salvarRequisicao(Destino destino){
+    private void salvarRequisicao(Destino destino) {
 
-        try{
+        try {
+
             Requisicao requisicao = new Requisicao();
             requisicao.setDestino(destino);
 
             Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogadoChamado();
-            usuarioLogado.setLatitude( String.valueOf(meuLocal.latitude));
+            usuarioLogado.setLatitude(String.valueOf(meuLocal.latitude));
             usuarioLogado.setLongitude(String.valueOf(meuLocal.longitude));
             requisicao.setUsuario(usuarioLogado);
             requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
 
             requisicao.salvar();
-        }
-        catch (Exception e){
+
+            linearLayoutDestino.setVisibility(View.GONE);
+            buttonChamar.setText("Cancelar Solicitação");
+            buttonChamar.setBackgroundColor(Color.parseColor("#FF0000"));
+            buttonChamar.setTextColor(Color.parseColor("#FFFFFF"));
+
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
@@ -227,7 +253,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         };
 
         //Solicitar atualizações de localização
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     100,
@@ -261,7 +287,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void alertaValidacaoPermissao(){
+    private void alertaValidacaoPermissao() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permissões Negadas");
