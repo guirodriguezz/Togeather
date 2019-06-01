@@ -11,7 +11,7 @@ public class Requisicao {
     private Destino destino;
 
     public static final String STATUS_AGUARDANDO = "AGUARDANDO";
-    public static final String STATUS_A_CAMINHO = "A CAMINHO";
+    public static final String STATUS_A_CAMINHO = "ACAMINHO";
     public static final String STATUS_VIAGEM  = "VIAGEM";
     public static final String STATUS_FINALIZADA = "FINALIZADA";
 

@@ -5,8 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="true" />
-
-    <uses-feature android:name = "android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -64,7 +63,8 @@
         <activity
             android:name=".activity.MapaActivity"
             android:label="@string/title_activity_mapa"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.RequisicoesActivity"></activity>
     </application>
 
 </manifest>

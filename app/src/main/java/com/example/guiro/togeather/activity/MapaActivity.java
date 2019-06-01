@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.Permissao;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
 import com.example.guiro.togeather.model.Destino;
@@ -37,11 +38,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import com.example.guiro.togeather.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -61,6 +69,8 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationListener locationListener;
     private LatLng meuLocal;
     private boolean abrirChamado = false;
+    private DatabaseReference firebaseRef;
+    private Requisicao requisicao;
 
 
     Date data = new Date();
@@ -76,10 +86,16 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MapsInitializer.initialize(this);
 
+        //Configurações iniciais
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+
         //Inicializar componentes
         editDestino = findViewById(R.id.editDestino);
         linearLayoutDestino = findViewById(R.id.linearLayoutDestino);
         buttonChamar = findViewById(R.id.buttonChamar);
+
+        //Adicionar listener para status da requisição
+        verificaStatusRequisicao();
 
         //Validar permissões
         Permissao.validarPermissoes(permissao, this, 1);
@@ -88,6 +104,49 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void verificaStatusRequisicao() {
+
+        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogadoChamado();
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+        Query requisicaoPesquisa = requisicoes.orderByChild("usuario/email")
+                .equalTo(usuarioLogado.getEmail());
+
+        requisicaoPesquisa.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<Requisicao> lista = new ArrayList<>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    lista.add(ds.getValue(Requisicao.class));
+
+                }
+
+                Collections.reverse(lista);
+                if (lista != null && lista.size() > 0) {
+
+                    requisicao = lista.get(0);
+
+                    switch (requisicao.getStatus()) {
+                        case Requisicao.STATUS_AGUARDANDO:
+                            linearLayoutDestino.setVisibility(View.GONE);
+                            buttonChamar.setText("Cancelar Solicitação");
+                            buttonChamar.setBackgroundColor(Color.parseColor("#FF0000"));
+                            buttonChamar.setTextColor(Color.parseColor("#FFFFFF"));
+                            abrirChamado = true;
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private Address recuperarEndereco(String endereco) {
@@ -184,12 +243,12 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
             Requisicao requisicao = new Requisicao();
             requisicao.setDestino(destino);
 
-            Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogadoChamado();
+            Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
             usuarioLogado.setLatitude(String.valueOf(meuLocal.latitude));
             usuarioLogado.setLongitude(String.valueOf(meuLocal.longitude));
+
             requisicao.setUsuario(usuarioLogado);
             requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
-
             requisicao.salvar();
 
             linearLayoutDestino.setVisibility(View.GONE);

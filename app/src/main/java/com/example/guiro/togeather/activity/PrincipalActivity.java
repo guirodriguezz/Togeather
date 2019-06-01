@@ -57,7 +57,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     public void btChat(View view) {
 
-        startActivity(new Intent(this, ChatActivity.class));
+        startActivity(new Intent(this, RequisicoesActivity.class));
         finish();
 
     }
