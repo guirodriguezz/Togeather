@@ -1,64 +1,191 @@
 package com.example.guiro.togeather.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.example.guiro.togeather.R;
+import com.example.guiro.togeather.adapter.ContatosAdapter;
+import com.example.guiro.togeather.adapter.RequisicoesAdapter;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
-import com.example.guiro.togeather.fragment.ContatosFragment;
-import com.example.guiro.togeather.fragment.ConversasFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ogaclejapan.smarttablayout.SmartTabIndicationInterpolator;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.example.guiro.togeather.helper.RecyclerItemClickListener;
+import com.example.guiro.togeather.helper.UsuarioFirebase;
+import com.example.guiro.togeather.model.Requisicao;
+import com.example.guiro.togeather.model.Usuario;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private FirebaseAuth autenticacao;
+    //Componentes
+    private RecyclerView recyclerViewListaContatos;
+    private TextView textResultado;
+
+    private DatabaseReference usuariosRef;
+    private DatabaseReference firebaseRef;
+    private ArrayList<Usuario> listaContatos = new ArrayList<>();
+    private List<Requisicao> listaRequisicoes = new ArrayList<>();
+    private ContatosAdapter adapter;
+    private RequisicoesAdapter adapter1;
+
+    private ValueEventListener valueEventListenerContatos;
+    private FirebaseUser usuarioAtual;
+    private Usuario acompanhante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        // Configurações iniciais
+        usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios");
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        usuarioAtual = UsuarioFirebase.getUsuarioAtual();
+        acompanhante = UsuarioFirebase.getDadosUsuarioLogado();
 
-        // Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
-        toolbar.setTitle("Mensagens");
-        setSupportActionBar(toolbar);
+        //Configurar componentes
+        recyclerViewListaContatos = findViewById(R.id.recyclerViewListaContatos);
+        textResultado = findViewById(R.id.textResultado);
 
-        // Configurar abas
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(),
-                FragmentPagerItems.with(this)
-                .add("Conversas", ConversasFragment.class)
-                .add("Contatos", ContatosFragment.class)
-                .create()
+        // Configurar adapter
+        adapter = new ContatosAdapter(listaContatos, getApplicationContext());
+        adapter1 = new RequisicoesAdapter(listaRequisicoes, getApplicationContext(), acompanhante);
+
+        // Configurar recyclerview
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerViewListaContatos.setLayoutManager(layoutManager);
+        recyclerViewListaContatos.setHasFixedSize(true);
+        recyclerViewListaContatos.setAdapter(adapter1);
+
+        // Configurar evento de clique no recyclerview
+        recyclerViewListaContatos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerViewListaContatos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                Usuario usuarioSelecionado = listaContatos.get(position);
+                                Intent i = new Intent(ChatActivity.this, ChatConversaActivity.class);
+                                i.putExtra("chatContato", usuarioSelecionado);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
         );
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
 
-        SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
-        viewPagerTab.setViewPager(viewPager);
+        //recuperarRequisicoes();
+        recuperarContatos();
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarRequisicoes();
 
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        usuariosRef.removeEventListener(valueEventListenerContatos);
+    }
+
+    public void recuperarContatos() {
+
+        listaContatos.clear();
+
+        valueEventListenerContatos = usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dados : dataSnapshot.getChildren()) {
+
+                    Usuario usuario = dados.getValue(Usuario.class);
+
+                    String emailUsuarioAtual = usuarioAtual.getEmail();
+                    if (!emailUsuarioAtual.equals(usuario.getEmail())) {
+
+                        listaContatos.add(usuario);
+
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void recuperarRequisicoes(){
+
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+        Query requisicaoPesquisa = requisicoes.orderByChild("status")
+                .equalTo(Requisicao.STATUS_AGUARDANDO);
+
+        requisicaoPesquisa.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0){
+                    textResultado.setVisibility(View.GONE);
+                    recyclerViewListaContatos.setVisibility(View.VISIBLE);
+                }else{
+                    textResultado.setVisibility(View.VISIBLE);
+                    recyclerViewListaContatos.setVisibility(View.GONE);
+                }
+
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    Requisicao requisicao = ds.getValue(Requisicao.class);
+                    listaRequisicoes.add(requisicao);
+                }
+
+                adapter1.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(ChatActivity.this, PrincipalActivity.class);
+        finish();
+        startActivity(i);
+
+    }
 
 }

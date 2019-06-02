@@ -57,7 +57,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     public void btChat(View view) {
 
-        startActivity(new Intent(this, RequisicoesActivity.class));
+        startActivity(new Intent(this, ChatActivity.class));
         finish();
 
     }
@@ -78,6 +78,15 @@ public class PrincipalActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(PrincipalActivity.this, PrincipalActivity.class);
+        finish();
+        startActivity(i);
+
     }
 
 }

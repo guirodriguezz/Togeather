@@ -1,19 +1,33 @@
 package com.example.guiro.togeather.activity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.adapter.RequisicoesAdapter;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
+import com.example.guiro.togeather.helper.RecyclerItemClickListener;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
 import com.example.guiro.togeather.model.Requisicao;
 import com.example.guiro.togeather.model.Usuario;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,10 +48,16 @@ public class RequisicoesActivity extends AppCompatActivity {
     private RequisicoesAdapter adapter;
     private Usuario acompanhante;
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requisicoes);
+
+        //Recuperar localização do usuário
+        recuperarLocalizacaoUsuario();
 
         //Configurações iniciais
         firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -55,7 +75,85 @@ public class RequisicoesActivity extends AppCompatActivity {
         recyclerRequisicoes.setHasFixedSize(true);
         recyclerRequisicoes.setAdapter(adapter);
 
+        //Adiciona evento de clique no recycler
+        recyclerRequisicoes.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerRequisicoes,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                Requisicao requisicao = listaRequisicoes.get(position);
+                                Intent i = new Intent(RequisicoesActivity.this, ChatActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
+
         recuperarRequisicoes();
+    }
+
+    private void recuperarLocalizacaoUsuario() {
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                //recuperar latitude e longitude
+                String latitude = String.valueOf(location.getLatitude());
+                String longitude = String.valueOf(location.getLongitude());
+
+                if(!latitude.isEmpty() && !longitude.isEmpty()){
+                    acompanhante.setLatitude(latitude);
+                    acompanhante.setLongitude(longitude);
+                    locationManager.removeUpdates(locationListener);
+                    adapter.notifyDataSetChanged();
+                }
+
+
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        //Solicitar atualizações de localização
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    0,
+                    0,
+                    locationListener
+            );
+        }
     }
 
     private void recuperarRequisicoes(){

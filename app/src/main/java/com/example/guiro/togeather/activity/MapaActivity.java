@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -361,6 +362,15 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(MapaActivity.this, PrincipalActivity.class);
+        finish();
+        startActivity(i);
 
     }
 }
