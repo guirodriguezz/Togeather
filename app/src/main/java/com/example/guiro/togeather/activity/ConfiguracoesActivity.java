@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +22,6 @@ import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.Permissao;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
-import com.example.guiro.togeather.model.Mensagem;
 import com.example.guiro.togeather.model.Usuario;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -75,9 +73,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         //toolbar.setTitle("Foto");
         setSupportActionBar(toolbar);
-
-        // Botão voltar
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Recuperar dados do usuário
         final FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();

@@ -14,4 +14,5 @@
     <string name="title_activity_chat_conversa">ChatConversaActivity</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_mapa">MapaActivity</string>
+    <string name="title_activity_acompanhar2">Map</string>
 </resources>

@@ -149,6 +149,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private void recuperarRequisicoes(){
 
+        listaRequisicoes.clear();
+
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
         Query requisicaoPesquisa = requisicoes.orderByChild("status")
                 .equalTo(Requisicao.STATUS_AGUARDANDO);

@@ -2,7 +2,6 @@ package com.example.guiro.togeather.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,11 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
         acompanhante.getLongitude();
 
         holder.nome.setText(usuario.getNome());
-        holder.distancia.setText("1 km- aproximadamente");
+        holder.bairro.setText(requisicao.getDestino().getBairro());
+        holder.cep.setText(requisicao.getDestino().getCep());
+        holder.cidade.setText(requisicao.getDestino().getCidade());
+        holder.numero.setText(requisicao.getDestino().getNumero());
+        holder.rua.setText(requisicao.getDestino().getRua());
 
         if(usuario.getFoto() != null){
 
@@ -69,13 +72,17 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView foto;
-        TextView nome, distancia;
+        TextView nome, bairro, cep, cidade, numero, rua;
 
         public MyViewHolder(View itemView){
             super(itemView);
 
             nome = itemView.findViewById(R.id.textRequisicaoNome);
-            distancia = itemView.findViewById(R.id.textRequisicaoDistancia);
+            bairro = itemView.findViewById(R.id.textRequisicaoBairro);
+            cep = itemView.findViewById(R.id.textRequisicaoCep);
+            cidade = itemView.findViewById(R.id.textRequisicaoCidade);
+            numero = itemView.findViewById(R.id.textRequisicaoNumero);
+            rua = itemView.findViewById(R.id.textRequisicaoRua);
             foto = itemView.findViewById(R.id.imageViewFotoContato);
         }
     }

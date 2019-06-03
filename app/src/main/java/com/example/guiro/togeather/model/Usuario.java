@@ -2,8 +2,6 @@ package com.example.guiro.togeather.model;
 
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 

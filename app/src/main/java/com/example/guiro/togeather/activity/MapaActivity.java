@@ -1,6 +1,7 @@
 package com.example.guiro.togeather.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,9 +54,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
-
 public class MapaActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //Componentes
@@ -69,9 +68,10 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LatLng meuLocal;
-    private boolean abrirChamado = false;
+    private boolean cancelarChamado = false;
     private DatabaseReference firebaseRef;
     private Requisicao requisicao;
+    private FloatingActionButton fabChat;
 
 
     Date data = new Date();
@@ -105,6 +105,19 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //Adiciona evento de clique no FabChat
+        fabChat = findViewById(R.id.fabChat);
+        fabChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MapaActivity.this, ChatActivity.class);
+                startActivity(i);
+                finish();
+
+            }
+        });
     }
 
     private void verificaStatusRequisicao() {
@@ -115,6 +128,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .equalTo(usuarioLogado.getEmail());
 
         requisicaoPesquisa.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -134,12 +148,12 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                         case Requisicao.STATUS_AGUARDANDO:
                             linearLayoutDestino.setVisibility(View.GONE);
                             buttonChamar.setText("Cancelar Solicitação");
-                            buttonChamar.setBackgroundColor(Color.parseColor("#FF0000"));
+                            buttonChamar.setBackgroundColor(Color.parseColor("#ff0000"));
                             buttonChamar.setTextColor(Color.parseColor("#FFFFFF"));
-                            abrirChamado = true;
+                            fabChat.setVisibility(View.VISIBLE);
+                            cancelarChamado = true;
                             break;
                     }
-
                 }
             }
 
@@ -148,6 +162,40 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+    }
+
+    private void alteraInterfaceStatusRequisicao(String status) {
+
+        cancelarChamado = false;
+        switch (status) {
+            case Requisicao.STATUS_AGUARDANDO:
+                requisicaoAguardando();
+                break;
+            case Requisicao.STATUS_CANCELADA:
+                requisicaoCancelada();
+                break;
+
+        }
+
+    }
+
+    private void requisicaoCancelada() {
+
+        linearLayoutDestino.setVisibility(View.VISIBLE);
+        buttonChamar.setText("Vamos Juntas");
+        buttonChamar.setBackgroundColor(Color.parseColor("#ffa500"));
+        buttonChamar.setTextColor(Color.parseColor("#343f4b"));
+        fabChat.setVisibility(View.GONE);
+        cancelarChamado = false;
+
+    }
+
+    private void requisicaoAguardando() {
+
+        linearLayoutDestino.setVisibility(View.GONE);
+        buttonChamar.setText("Cancelar Solicitação");
+        cancelarChamado = true;
+
     }
 
     private Address recuperarEndereco(String endereco) {
@@ -168,7 +216,18 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void realizarChamado(View view) {
 
-        if (!abrirChamado) {   //Acompanhante ainda não solicitada
+        //false -> Chamado não pode ser cancelado ainda
+        //true -> Chamado pode ser cancelado
+
+        if (cancelarChamado) {   //Acompanhante ainda não solicitada
+
+            //Cancelar requisição
+            requisicao.setStatus(Requisicao.STATUS_CANCELADA);
+            requisicao.atualizarStatus();
+
+            requisicaoCancelada();
+
+        } else {
 
             String enderecoDestino = editDestino.getText().toString();
 
@@ -200,14 +259,8 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            try {
-                                salvarRequisicao(destino);
-                                abrirChamado = true;
-                            } catch (Exception ex) {
-                                Toast.makeText(MapaActivity.this, ex.toString(),
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
+                            salvarRequisicao(destino);
+                            //cancelarChamado = true;
 
                         }
                     });
@@ -226,12 +279,6 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(this, "Informe o endereço de destino!",
                         Toast.LENGTH_SHORT).show();
             }
-
-
-        } else {
-            //Cancelar requisição
-            abrirChamado = false;
-
         }
 
 
@@ -239,27 +286,21 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void salvarRequisicao(Destino destino) {
 
-        try {
+        Requisicao requisicao = new Requisicao();
+        requisicao.setDestino(destino);
 
-            Requisicao requisicao = new Requisicao();
-            requisicao.setDestino(destino);
+        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+        usuarioLogado.setLatitude(String.valueOf(meuLocal.latitude));
+        usuarioLogado.setLongitude(String.valueOf(meuLocal.longitude));
 
-            Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-            usuarioLogado.setLatitude(String.valueOf(meuLocal.latitude));
-            usuarioLogado.setLongitude(String.valueOf(meuLocal.longitude));
+        requisicao.setUsuario(usuarioLogado);
+        requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
+        requisicao.salvar();
 
-            requisicao.setUsuario(usuarioLogado);
-            requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
-            requisicao.salvar();
-
-            linearLayoutDestino.setVisibility(View.GONE);
-            buttonChamar.setText("Cancelar Solicitação");
-            buttonChamar.setBackgroundColor(Color.parseColor("#FF0000"));
-            buttonChamar.setTextColor(Color.parseColor("#FFFFFF"));
-
-        } catch (Exception e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
+        linearLayoutDestino.setVisibility(View.GONE);
+        buttonChamar.setText("Cancelar Solicitação");
+        buttonChamar.setBackgroundColor(Color.parseColor("#ff0000"));
+        buttonChamar.setTextColor(Color.parseColor("#FFFFFF"));
 
     }
 
@@ -287,7 +328,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.addMarker(
                         new MarkerOptions()
                                 .position(meuLocal)
-                                .title("Localização Atual")
+                                .title(UsuarioFirebase.getUsuarioAtual().getDisplayName())
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.girl))
                 );
                 mMap.moveCamera(
@@ -366,9 +407,9 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(MapaActivity.this, PrincipalActivity.class);
+        Intent i = new Intent(MapaActivity.this, PrincipalActivity.class);
         finish();
         startActivity(i);
 

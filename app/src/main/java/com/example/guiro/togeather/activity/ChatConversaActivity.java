@@ -194,13 +194,9 @@ public class ChatConversaActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        Intent i=new Intent(ChatConversaActivity.this, PrincipalActivity.class);
+    public void irMapa(View view){
+        startActivity(new Intent(this, AcompanharActivity.class));
         finish();
-        startActivity(i);
-
     }
 
 }

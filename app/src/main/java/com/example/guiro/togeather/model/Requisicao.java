@@ -3,6 +3,9 @@ package com.example.guiro.togeather.model;
 import com.example.guiro.togeather.config.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Requisicao {
     private String id;
     private String status;
@@ -14,6 +17,7 @@ public class Requisicao {
     public static final String STATUS_A_CAMINHO = "ACAMINHO";
     public static final String STATUS_VIAGEM  = "VIAGEM";
     public static final String STATUS_FINALIZADA = "FINALIZADA";
+    public static final String STATUS_CANCELADA = "CANCELADA";
 
     public Requisicao() {
     }
@@ -26,6 +30,20 @@ public class Requisicao {
         setId(idRequisicao);
 
         requisicoes.child( getId()).setValue(this);
+    }
+
+    public void atualizarStatus(){
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+
+        DatabaseReference requisicao = requisicoes.child(getId());
+
+        Map objeto = new HashMap();
+        objeto.put("status", getStatus());
+
+        requisicao.updateChildren( objeto );
+
     }
 
     public String getId() {

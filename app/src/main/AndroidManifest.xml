@@ -64,7 +64,10 @@
             android:name=".activity.MapaActivity"
             android:label="@string/title_activity_mapa"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.RequisicoesActivity"></activity>
+        <activity android:name=".activity.RequisicoesActivity" />
+        <activity
+            android:name=".activity.AcompanharActivity"
+            android:label="@string/title_activity_acompanhar2"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package com.example.guiro.togeather.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.guiro.togeather.R;
 import com.example.guiro.togeather.helper.UsuarioFirebase;
 import com.example.guiro.togeather.model.Mensagem;
-import com.example.guiro.togeather.model.Usuario;
 
 import java.util.List;
 
